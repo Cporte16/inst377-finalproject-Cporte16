@@ -1,0 +1,30 @@
+{
+  "name": "inst377-finalproject-cporte16",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cporte16/inst377-finalproject-Cporte16.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Cporte16/inst377-finalproject-Cporte16/issues"
+  },
+  "homepage": "https://github.com/Cporte16/inst377-finalproject-Cporte16#readme",
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-fetch": "^2.7.0",
+    "path": "^0.12.7"
+  }
+}

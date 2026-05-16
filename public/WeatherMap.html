@@ -1,0 +1,149 @@
+<html>
+    <head>
+        <title>Weather Map</title>
+        <link rel="Homepage stylesheet" href="index.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    </head>
+
+    <body>
+
+        <h1 style="color: white;">WeatherMap - App</h1>
+
+    <input id="city-input" type="text" placeholder="Enter a city here">
+
+    <select id="city-select" style="display:none;"></select>
+
+    <button onclick="getCities()">Search Cities</button>
+
+    <button onclick="getWeather()">Search Weather</button>
+
+    <div id="weather-info" style="display:none;"></div>
+
+    <div class= "animate__animated animate__fadeIn" id="map"></div>
+
+        <script>
+
+            let map = L.map('map').setView([35, -98], 4);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution: '&copy; OpenStreetMap contributors'}).addTo(map);
+
+            let cityMarker;
+
+            async function getCities() {
+
+                const city = document.getElementById("city-input").value;
+
+                    if (!city) {
+                        alert("Enter a city name");
+                        return;
+                    }
+
+                    try {
+
+                    const response = await fetch(`/api/cities?city=${city}`);
+
+                    const cities = await response.json();
+
+                    const select = document.getElementById("city-select");
+
+                    select.innerHTML = "";
+
+                        if (!cities.length) {
+
+                            select.style.display = "none";
+                            alert("No matching cities found");
+                            return;
+                    }
+
+                    cities.forEach((city, index) => {
+
+                        const option = document.createElement("option");
+
+                        option.value = JSON.stringify({
+                            lat: city.lat,
+                            lon: city.lon,
+                            name: city.name,
+                            state: city.state,
+                            country: city.country
+                        });
+
+                        option.textContent = city.name + (city.state ? ", " + city.state : "") + " (" + city.country + ")";
+
+                        select.appendChild(option);
+
+                            if (index === 0) {
+                                select.selectedIndex = 0;
+                            }
+                    });
+
+                    select.style.display = "block";
+
+                    } catch (error) {
+                        console.log(error);
+                        alert("Could not retrieve cities");
+                    }
+                }
+
+            async function getWeather() {
+
+                const select = document.getElementById("city-select");
+
+                    if (!select.options.length) {
+                        alert("Please search for a city first");
+                        return;
+                    }
+
+                const selectedCity = JSON.parse(select.value);
+
+                const lat = selectedCity.lat;
+                const lon = selectedCity.lon;
+
+                const cityName = selectedCity.name + (selectedCity.state? ", " + selectedCity.state: "") + " (" + selectedCity.country + ")";
+
+                const weatherInfo = document.getElementById("weather-info");
+
+                    try {
+
+                        const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+
+                        const data = await response.json();
+
+                        if (data.error) {
+                            alert(data.error);
+                            return;
+                        }
+
+                    weatherInfo.style.display = "block";
+                    weatherInfo.classList.remove("animate__animated", "animate__fadeInDown");
+                    void weatherInfo.offsetWidth;
+                    weatherInfo.classList.add("animate__animated", "animate__fadeInDown");
+
+                    weatherInfo.innerHTML = `
+                        <div class="card">
+                            <h2>${cityName}</h2>
+                            <p><strong>Condition: </strong>${data.description}</p>
+                            <p><strong>Temperature: </strong>${data.temp}°F</p>
+                            <p><strong>Feels Like: </strong>${data.feelsLike}°F</p>
+                            <p><strong>Humidity: </strong>${data.humidity}%</p>
+                            <p><strong>Wind Speed: </strong>${data.windSpeed}mph</p>
+                            <p><strong>Precipitation: </strong>${data.precipitation}mm</p>
+                        </div>`;
+
+                    map.setView([lat, lon], 9);
+
+                        if (cityMarker) {
+                            map.removeLayer(cityMarker);
+                        }
+
+                    cityMarker = L.marker([lat, lon]).addTo(map);
+                    
+                } catch(error) {
+                    console.log(error);
+                    alert("Could not retrieve cities");
+            }};
+        </script>
+    </body>
+</html>
