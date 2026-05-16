@@ -12,17 +12,27 @@
 
         <h1 style="color: white; font-family: Georgia, 'Times New Roman', Times, serif;">WeatherMap - App</h1>
 
-    <input id="city-input" type="text" placeholder="Enter a city here">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="About.html">About Us</a></li>
+                <li><a href="WeatherMap.html">WeatherMap</a></li>
+            </ul>
+        </nav>
+        <br>
 
-    <select id="city-select" style="display:none;"></select>
+        <input id="city-input" type="text" placeholder="Enter a city here">
+        <br>
 
-    <button onclick="getCities()">Search Cities</button>
+        <select id="city-select" style="display:none;"></select>
 
-    <button onclick="getWeather()">Search Weather</button>
+        <button onclick="getCities()">Search Cities</button>
 
-    <div id="weather-info" style="display:none;"></div>
+        <button onclick="getWeather()">Search Weather</button>
 
-    <div class= "animate__animated animate__fadeIn" id="map"></div>
+        <div id="weather-info" style="display:none;"></div>
+
+        <div class= "animate__animated animate__fadeIn" id="map"></div>
 
         <script>
 

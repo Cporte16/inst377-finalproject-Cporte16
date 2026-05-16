@@ -93,6 +93,16 @@ nav a {
   padding: 5px;
 }
 
+#about {
+  background-color: white;
+  border: solid black 2px;
+  width: 50%;
+  margin: 0 auto;
+  text-align: left;
+  border-radius: 15px;
+  padding: 5px;
+}
+
 #map {
   height: 400px;
   width: 60%;
